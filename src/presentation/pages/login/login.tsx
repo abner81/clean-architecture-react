@@ -5,6 +5,7 @@ import Styles from "./login-styles.scss";
 import { Validation } from "@/presentation/protocols/validation";
 import { Authentication } from "@/domain/usecases";
 import { stat } from "fs";
+import { Link } from "react-router-dom";
 
 type Props = {
   validation: Validation;
@@ -70,7 +71,9 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
           >
             Entrar
           </button>
-          <span className={Styles.link}>Criar conta</span>
+          <Link className={Styles.link} to="/signup" data-testid="signup">
+            Criar conta
+          </Link>
           <FormStatus />
         </form>
       </Context.Provider>
