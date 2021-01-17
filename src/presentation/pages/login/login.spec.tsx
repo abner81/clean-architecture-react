@@ -63,7 +63,7 @@ const simulateStatusForField = (
   expect(emailStatus.textContent).toBe(validationError ? "🔴" : "🟢");
 };
 
-const history = createMemoryHistory();
+const history = createMemoryHistory({ initialEntries: ["/login"] });
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   const authenticationSpy = new AuthenticationSpy();
@@ -180,6 +180,8 @@ describe("Login Component", () => {
       "accessToken",
       authenticationSpy.account.accessToken
     );
+    expect(history.length).toBe(1);
+    expect(history.location.pathname).toBe("/");
   });
 
   test("Should go to signup page", () => {
