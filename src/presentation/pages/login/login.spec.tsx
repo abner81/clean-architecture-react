@@ -14,7 +14,6 @@ import {
 } from "@/presentation/test";
 import faker from "faker";
 import { InvalidCredentialsError } from "@/domain/errros";
-import "jest-localstorage-mock";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 
@@ -118,9 +117,6 @@ const makeSut = (params?: SutParams): SutTypes => {
 
 describe("Login Component", () => {
   afterEach(cleanup);
-  beforeEach(() => {
-    localStorage.clear();
-  });
 
   test("Should start with initial state", () => {
     const validationError = faker.random.words();
@@ -209,6 +205,14 @@ describe("Login Component", () => {
     );
     expect(history.length).toBe(1);
     expect(history.location.pathname).toBe("/");
+  });
+  test("Should presnet error if SaveAccessToken fails", async () => {
+    const { sut, authenticationSpy, saveAccessTokenMock } = makeSut();
+    const error = new InvalidCredentialsError();
+    jest.spyOn(saveAccessTokenMock, "save").mockRejectedValue(error);
+    await simulateValidSubmit(sut);
+    testElementText(sut, "main-error", error.message);
+    testErrorWrapChildCount(sut, 1);
   });
 
   test("Should go to signup page", () => {
