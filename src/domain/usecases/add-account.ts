@@ -7,6 +7,6 @@ export type AddAccountParams = {
   name: string;
 };
 
-export interface Authentication {
+export interface AddAccount {
   add(params: AddAccountParams): Promise<AccountModel>;
 }
