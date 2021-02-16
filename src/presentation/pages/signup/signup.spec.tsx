@@ -41,11 +41,13 @@ const testStatusForField = (
 
 describe("SignUp Component", () => {
   test("Should start with initial state", () => {
-    const validationError = "Campo Obrighatório";
+    const validationError = "Campo Obrigatório";
     const { sut } = makeSut();
     testChildCount(sut, "error-wrap", 0);
     testButtonIsDisabled(sut, "submit", true);
     testStatusForField(sut, "email", validationError);
     testStatusForField(sut, "password", validationError);
+    testStatusForField(sut, "name", validationError);
+    testStatusForField(sut, "passwordConfirmation", validationError);
   });
 });
