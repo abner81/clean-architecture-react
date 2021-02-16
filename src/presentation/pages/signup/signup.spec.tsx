@@ -39,10 +39,7 @@ const simulateValidSubmit = async (
   fireEvent.submit(form);
   await waitFor(() => form);
 };
-const testElementExists = (sut: RenderResult, fieldname: string): void => {
-  const element = sut.getByTestId(fieldname);
-  expect(element).toBeTruthy();
-};
+
 describe("SignUp Component", () => {
   afterEach(cleanup);
   test("Should start with initial state", () => {
@@ -114,6 +111,6 @@ describe("SignUp Component", () => {
   test("Should show spinner on submit", async () => {
     const { sut } = makeSut();
     await simulateValidSubmit(sut);
-    testElementExists(sut, "spinner");
+    Helper.testElementExists(sut, "spinner");
   });
 });

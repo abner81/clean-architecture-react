@@ -39,3 +39,11 @@ export const populateField = (
     target: { value },
   });
 };
+
+export const testElementExists = (
+  sut: RenderResult,
+  fieldname: string
+): void => {
+  const element = sut.getByTestId(fieldname);
+  expect(element).toBeTruthy();
+};
