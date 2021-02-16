@@ -6,10 +6,10 @@ import Styles from "./signup-styles.scss";
 const SignUp: React.FC = () => {
   const [state, setState] = useState({
     isLoading: false,
-    nameError: "",
-    emailError: "Campo Obrighatório",
-    passwordError: "Campo Obrighatório",
-    passwordConfirmationError: "Campo Obrighatório",
+    nameError: "Campo Obrigatório",
+    emailError: "Campo Obrigatório",
+    passwordError: "Campo Obrigatório",
+    passwordConfirmationError: "Campo Obrigatório",
     mainError: "",
   });
 
