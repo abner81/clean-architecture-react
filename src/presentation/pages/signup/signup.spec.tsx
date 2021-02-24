@@ -14,7 +14,7 @@ import {
   ValidationStub,
 } from "@/presentation/test";
 import faker from "faker";
-import { EmailInUseError } from "@/domain/errros";
+import { EmailInUseError, InvalidCredentialsError } from "@/domain/errros";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 
@@ -181,5 +181,14 @@ describe("SignUp Component", () => {
     );
     expect(history.length).toBe(1);
     expect(history.location.pathname).toBe("/");
+  });
+
+  test("Should presnet error if SaveAccessToken fails", async () => {
+    const { sut, addAccountSpy, saveAccessTokenMock } = makeSut();
+    const error = new EmailInUseError();
+    jest.spyOn(saveAccessTokenMock, "save").mockRejectedValue(error);
+    await simulateValidSubmit(sut);
+    Helper.testElementText(sut, "main-error", error.message);
+    Helper.testChildCount(sut, "error-wrap", 1);
   });
 });
