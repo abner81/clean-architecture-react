@@ -47,3 +47,12 @@ export const testElementExists = (
   const element = sut.getByTestId(fieldname);
   expect(element).toBeTruthy();
 };
+
+export const testElementText = (
+  sut: RenderResult,
+  fieldname: string,
+  text: string
+): void => {
+  const element = sut.getByTestId(fieldname);
+  expect(element.textContent).toEqual(text);
+};

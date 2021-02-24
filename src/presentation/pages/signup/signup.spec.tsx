@@ -7,27 +7,44 @@ import {
   waitFor,
 } from "@testing-library/react";
 import SignUp from "./signup";
-import { AddAccountSpy, Helper, ValidationStub } from "@/presentation/test";
+import {
+  AddAccountSpy,
+  Helper,
+  SaveAccessTokenMock,
+  ValidationStub,
+} from "@/presentation/test";
 import faker from "faker";
-import { EmailInUseError, InvalidCredentialsError } from "@/domain/errros";
+import { EmailInUseError } from "@/domain/errros";
+import { createMemoryHistory } from "history";
+import { Router } from "react-router-dom";
 
 type SutTypes = {
   sut: RenderResult;
   addAccountSpy: AddAccountSpy;
+  saveAccessTokenMock: SaveAccessTokenMock;
 };
 
 type SutParams = {
   validationError: string;
 };
 
+const history = createMemoryHistory({ initialEntries: ["/signup"] });
+
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   const addAccountSpy = new AddAccountSpy();
+  const saveAccessTokenMock = new SaveAccessTokenMock();
   validationStub.errorMessage = params?.validationError;
   const sut = render(
-    <SignUp validation={validationStub} addAccount={addAccountSpy} />
+    <Router history={history}>
+      <SignUp
+        validation={validationStub}
+        addAccount={addAccountSpy}
+        saveAccessToken={saveAccessTokenMock}
+      />
+    </Router>
   );
-  return { sut, addAccountSpy };
+  return { sut, addAccountSpy, saveAccessTokenMock };
 };
 
 const simulateValidSubmit = async (
@@ -43,15 +60,6 @@ const simulateValidSubmit = async (
   const form = sut.getByTestId("form");
   fireEvent.submit(form);
   await waitFor(() => form);
-};
-
-const testElementText = (
-  sut: RenderResult,
-  fieldname: string,
-  text: string
-): void => {
-  const element = sut.getByTestId(fieldname);
-  expect(element.textContent).toEqual(text);
 };
 
 describe("SignUp Component", () => {
@@ -161,7 +169,17 @@ describe("SignUp Component", () => {
     const error = new EmailInUseError();
     jest.spyOn(addAccountSpy, "add").mockRejectedValueOnce(error);
     await simulateValidSubmit(sut);
-    testElementText(sut, "main-error", error.message);
+    Helper.testElementText(sut, "main-error", error.message);
     Helper.testChildCount(sut, "error-wrap", 1);
+  });
+
+  test("Should call SaveAccessToken on success", async () => {
+    const { sut, addAccountSpy, saveAccessTokenMock } = makeSut();
+    await simulateValidSubmit(sut);
+    expect(saveAccessTokenMock.accessToken).toBe(
+      addAccountSpy.account.accessToken
+    );
+    expect(history.length).toBe(1);
+    expect(history.location.pathname).toBe("/");
   });
 });
