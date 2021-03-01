@@ -37,4 +37,13 @@ button {
     outline-color: $primaryLight;
     opacity: 0.9;
   }
+
+  &:disabled {
+    background-color: $disabledBackground;
+    color: $disabledColor;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 }

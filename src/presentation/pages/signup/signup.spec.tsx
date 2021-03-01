@@ -184,7 +184,7 @@ describe("SignUp Component", () => {
   });
 
   test("Should presnet error if SaveAccessToken fails", async () => {
-    const { sut, addAccountSpy, saveAccessTokenMock } = makeSut();
+    const { sut, saveAccessTokenMock } = makeSut();
     const error = new EmailInUseError();
     jest.spyOn(saveAccessTokenMock, "save").mockRejectedValue(error);
     await simulateValidSubmit(sut);
