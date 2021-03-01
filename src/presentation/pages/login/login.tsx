@@ -77,7 +77,7 @@ const Login: React.FC<Props> = ({
           >
             Entrar
           </button>
-          <Link className={Styles.link} to="/signup" data-testid="signup">
+          <Link className={Styles.link} to="/signup" data-testid="signup-link">
             Criar conta
           </Link>
           <FormStatus />
