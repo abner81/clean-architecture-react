@@ -12,9 +12,6 @@ const Input: React.FC<Props> = (props: Props) => {
   const inputRef = useRef<HTMLInputElement>();
   const error = state[`${props.name}Error`];
 
-  const getStatus = (): string => {
-    return error ? "🔴" : "🟢";
-  };
   const getTitle = (): string => {
     return error ? error : "Tudo certo!";
   };
@@ -30,26 +27,28 @@ const Input: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <div className={Styles.inputWrap}>
+    <div
+      data-testid={`${props.name}-wrap`}
+      className={Styles.inputWrap}
+      data-status={error ? "invalid" : "valid"}
+    >
       <input
         {...props}
         placeholder=" "
         ref={inputRef}
+        title={error}
         onChange={handleChange}
         data-testid={props.name}
         readOnly
         onFocus={enableIput}
       />
-      <label onClick={() => inputRef.current.focus()}>
+      <label
+        data-testid={`${props.name}-label`}
+        title={error}
+        onClick={() => inputRef.current.focus()}
+      >
         {props.placeholder}
       </label>
-      <span
-        data-testid={`${props.name}-status`}
-        title={getTitle()}
-        className={Styles.status}
-      >
-        {getStatus()}
-      </span>
     </div>
   );
 };
