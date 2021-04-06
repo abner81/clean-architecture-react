@@ -1,6 +1,6 @@
 import faker from "faker";
 import * as FormHelper from "../support/form-helper";
-import * as Http from "./login-mocks";
+import * as Http from "../support/login-mocks";
 
 const simulateValidSubmit = () => {
   cy.getByTestId("email").focus().type(faker.internet.email());
@@ -45,7 +45,7 @@ describe("Login", () => {
     Http.mockInvalidCredentialsError();
     simulateValidSubmit();
     FormHelper.testMainError("Credenciais inválidas");
-    FormHelper.testUrl("login/");
+    FormHelper.testUrl("/login");
   });
   it("should present UnexpectedError on 400", () => {
     Http.mockUnexpectedError();
