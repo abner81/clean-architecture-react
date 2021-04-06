@@ -112,6 +112,7 @@ describe("Login Component", () => {
     Helper.populateField(sut, "password");
     Helper.testButtonIsDisabled(sut, "submit", false);
   });
+
   test("Should show spinner on submit", async () => {
     const { sut } = makeSut();
     await simulateValidSubmit(sut);
@@ -158,6 +159,7 @@ describe("Login Component", () => {
     expect(history.length).toBe(1);
     expect(history.location.pathname).toBe("/");
   });
+
   test("Should presnet error if SaveAccessToken fails", async () => {
     const { sut, authenticationSpy, saveAccessTokenMock } = makeSut();
     const error = new InvalidCredentialsError();
