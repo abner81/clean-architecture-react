@@ -6,3 +6,6 @@ export const mockEmailInUseError = (): void =>
 
 export const mockUnexpectedError = (): void =>
   Helper.mockUnexpectedError(/signup/, "POST");
+
+export const mockInvalidData = (): void =>
+  Helper.mockOk(/signup/, "POST", { invalid: faker.random.uuid() });

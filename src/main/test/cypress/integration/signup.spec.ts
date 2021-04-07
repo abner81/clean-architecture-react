@@ -84,4 +84,14 @@ describe("Login", () => {
 
     FormHelper.testUrl("/signup");
   });
+
+  it("should present unexpected error if invalid data is returned", () => {
+    Http.mockInvalidData();
+    simulateValidSubmit();
+    FormHelper.testMainError(
+      "Algo de errado aconteceu. Tente novamente em breve."
+    );
+
+    FormHelper.testUrl("/signup");
+  });
 });
